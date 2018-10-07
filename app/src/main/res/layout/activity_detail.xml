@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/common_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_video_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_15_dp"
+                android:text="公告名称"
+                android:textColor="#353535"
+                android:textSize="@dimen/font_17_sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_video_name"
+                android:paddingBottom="@dimen/space_10_dp"
+                android:paddingTop="@dimen/space_12_dp">
+
+                <TextView
+                    android:id="@+id/tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/space_5_dp"
+                    android:paddingLeft="@dimen/space_15_dp"
+                    android:paddingRight="@dimen/space_15_dp"
+                    android:text="发布时间:  2018-07-04"
+                    android:textColor="#808080"
+                    android:textSize="@dimen/font_14_sp" />
+
+                <TextView
+                    android:id="@+id/tv_zan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawablePadding="@dimen/space_5_dp"
+                    android:paddingLeft="@dimen/space_15_dp"
+                    android:paddingRight="@dimen/space_15_dp"
+                    android:text="发布人:  贵州省"
+                    android:textColor="#808080"
+                    android:textSize="@dimen/font_14_sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_line"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_below="@id/rl_comment"
+                android:background="#353535" />
+
+            <com.jdry.noticemanagers.utils.HtmlTextView
+                android:id="@+id/tv_brief"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_line"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:gravity="left"
+                android:lineSpacingExtra="12dp"
+                android:padding="0dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_read"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_44_dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:text="已 读"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_16_sp"
+        android:visibility="visible" />
+</RelativeLayout>

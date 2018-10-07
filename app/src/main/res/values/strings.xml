@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">信访通</string>
+    <string name="nav_back">返回</string>
+
+    <string name="tab1">已读</string>
+    <string name="tab2">未读</string>
+    <string name="tab3">我的</string>
+    <string name="detail_text">在2017国际体验设计大会中，来自“互联网银行用户体验联合实验室”的Ray和Louie在工作坊里为大家介绍了互联网金融的通用设计流程。后续我们把在工作坊里面提到设计方法库进行了再次整理和优化，在这里为大家详细的介绍。</string>
+
+</resources>
