@@ -27,11 +27,7 @@ public class ReadMsgPresenter implements IPresenterCallback {
     public <T> void httpRequestSuccess(T t, int order) {
         fragmentRead.hideProgress();
         CommonBean commonBean = (CommonBean) t;
-        if (commonBean.getData() == null) {
-            fragmentRead.httpFailure("没有最新数据", 0);
-            return;
-        }
-        fragmentRead.httpSuccess(t, 1);
+        fragmentRead.httpSuccess(commonBean, 1);
     }
 
     @Override

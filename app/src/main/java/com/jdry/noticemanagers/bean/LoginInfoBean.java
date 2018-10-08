@@ -29,20 +29,23 @@ public class LoginInfoBean {
     @Unique
     private String mobilePhone;
 
+    private String password;
+
     private String name;
     private long registerTime;
     private String remark;
     private String token;
-    @Generated(hash = 629313674)
+    @Generated(hash = 1715668572)
     public LoginInfoBean(Long id, String approveTime, String deptId,
-            String deptName, String enabled, String mobilePhone, String name,
-            long registerTime, String remark, String token) {
+            String deptName, String enabled, String mobilePhone, String password,
+            String name, long registerTime, String remark, String token) {
         this.id = id;
         this.approveTime = approveTime;
         this.deptId = deptId;
         this.deptName = deptName;
         this.enabled = enabled;
         this.mobilePhone = mobilePhone;
+        this.password = password;
         this.name = name;
         this.registerTime = registerTime;
         this.remark = remark;
@@ -110,6 +113,12 @@ public class LoginInfoBean {
     }
     public void setToken(String token) {
         this.token = token;
+    }
+    public String getPassword() {
+        return this.password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

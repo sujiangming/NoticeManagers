@@ -6,7 +6,6 @@ import com.jdry.noticemanagers.global.JDRYConstant;
 import com.jdry.noticemanagers.mvp.model.LoginModel;
 import com.jdry.noticemanagers.mvp.view.activity.JDRYBaseActivity;
 import com.jdry.noticemanagers.mvp.view.activity.MainActivity;
-import com.jdry.noticemanagers.utils.MD5Util;
 
 /**
  * Created by JDRY-SJM on 2018/2/4.
@@ -27,8 +26,7 @@ public class LoginPresenter implements IPresenterCallback {
 
     public void login(String username, String pwd) {
         loginActivity.showProgress();
-        String tt = MD5Util.encrypt(pwd);
-        loginModel.getLogin(username, tt);
+        loginModel.getLogin(username, pwd);
         mobilPhone = username;
     }
 
@@ -36,16 +34,22 @@ public class LoginPresenter implements IPresenterCallback {
     public <T> void httpRequestSuccess(T t, int order) {
         loginActivity.hideProgress();
         CommonBean commonBean = (CommonBean) t;
-        switch (invokeIndex) {
-            case JDRYConstant.LOGIN_PAGE_LOGIN:
-                JDRYApplication.getInstance().setJPushTag(mobilPhone);
-                loginActivity.toast(commonBean.getMessage());
-                loginActivity.openNewActivity(MainActivity.class);
-                break;
-            case JDRYConstant.LAUNCHER_PAGE_LOGIN:
-                loginActivity.toast("欢迎回来~");
-                loginActivity.openNewActivity(MainActivity.class);
-                break;
+        if (invokeIndex == JDRYConstant.LOGIN_PAGE_LOGIN) {
+            switch (order) {
+                case JDRYConstant.HTTP_COMMON_STATUS_FAIL:
+                    loginActivity.toast(commonBean.getMessage());
+                    break;
+                case JDRYConstant.HTTP_COMMON_DATA_EMPTY:
+                    loginActivity.toast(commonBean.getMessage());
+                    break;
+                default:
+                    loginActivity.toast(commonBean.getMessage());
+                    JDRYApplication.getInstance().setJPushTag(mobilPhone);
+                    loginActivity.openNewActivity(MainActivity.class);
+                    break;
+            }
+        } else {
+            loginActivity.openNewActivity(MainActivity.class);
         }
     }
 
@@ -54,7 +58,7 @@ public class LoginPresenter implements IPresenterCallback {
         loginActivity.hideProgress();
         switch (invokeIndex) {
             case JDRYConstant.LOGIN_PAGE_LOGIN:
-                loginActivity.toast("登录失败~");
+                loginActivity.toast(t);
                 break;
             case JDRYConstant.LAUNCHER_PAGE_LOGIN:
                 loginActivity.openNewActivity(MainActivity.class);//表示从启动页面获取个人信息失败

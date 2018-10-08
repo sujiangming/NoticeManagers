@@ -27,6 +27,15 @@ public class ReadMsgBean implements Serializable{
     private String readTime;
     private int status;
     private String title;
+    private String imgUrl;//sjm add
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public String getAppUserId() {
         return appUserId;

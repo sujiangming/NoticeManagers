@@ -14,6 +14,7 @@ import com.jdry.noticemanagers.bean.CommonBean;
 import com.jdry.noticemanagers.bean.ReadMsgBean;
 import com.jdry.noticemanagers.mvp.presenter.ReadMsgDetailPresenter;
 import com.jdry.noticemanagers.mvp.view.custom.RichText;
+import com.jdry.noticemanagers.rxbus.RxBus;
 import com.jdry.noticemanagers.utils.HtmlTextView;
 import com.jdry.noticemanagers.utils.JDRYTime;
 
@@ -73,10 +74,10 @@ public class ActivityDetail extends JDRYBaseActivity {
         tvVideoName.setText(readMsgBean.getTitle());
         String content = readMsgBean.getContent();
         if (null == content || "".equals(content)) {
-            //tvBrief.loadDataWithBaseURL(null, "没有内容哦", "text/html", "utf-8", null);
+            tvBrief.setHtmlFromString("没有内容哦", false);
         } else {
             //tvBrief.loadDataWithBaseURL(null, CSS_STYLE + content, "text/html", "utf-8", null);
-            tvBrief.setHtmlFromString(content,false);
+            tvBrief.setHtmlFromString(content, false);
         }
         String issueTime = JDRYTime.transferLongToString(readMsgBean.getIssueTime(), "yyyy-MM-dd HH:mm:ss");
         setTextViewValue(tvComment, "发布时间:  " + issueTime);
@@ -104,6 +105,7 @@ public class ActivityDetail extends JDRYBaseActivity {
         CommonBean commonBean = (CommonBean) t;
         toast(commonBean.getMessage());
         btnRead.setVisibility(View.GONE);
+        post(commonBean.getMessage());
     }
 
     @Override
@@ -111,27 +113,7 @@ public class ActivityDetail extends JDRYBaseActivity {
         toast((String) t);
     }
 
-    //点击返回上一页面而不是退出浏览器
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK && tvBrief.canGoBack()) {
-//            tvBrief.goBack();
-//            return true;
-//        }
-//
-//        return super.onKeyDown(keyCode, event);
-//    }
-//
-//    //销毁Webview
-//    @Override
-//    protected void onDestroy() {
-//        if (tvBrief != null) {
-//            tvBrief.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-//            tvBrief.clearHistory();
-//            ((ViewGroup) tvBrief.getParent()).removeView(tvBrief);
-//            tvBrief.destroy();
-//            tvBrief = null;
-//        }
-//        super.onDestroy();
-//    }
+    private void post(String dataBean) {
+        RxBus.getDefault().post(dataBean);
+    }
 }

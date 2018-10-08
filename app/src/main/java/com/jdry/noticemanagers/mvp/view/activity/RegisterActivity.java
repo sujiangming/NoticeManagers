@@ -11,14 +11,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jdry.noticemanagers.R;
 import com.jdry.noticemanagers.bean.DeptBean;
 import com.jdry.noticemanagers.mvp.presenter.DeptPresenter;
 import com.jdry.noticemanagers.mvp.presenter.RegisterPresenter;
 import com.jdry.noticemanagers.mvp.view.custom.TopBarView;
-import com.jdry.noticemanagers.utils.Logger;
+import com.jdry.noticemanagers.utils.JDRYUtils;
 import com.jdry.noticemanagers.utils.MD5Util;
 
 import java.util.List;
@@ -48,7 +47,8 @@ public class RegisterActivity extends JDRYBaseActivity {
     @OnClick(R.id.btnRegister)
     public void onViewClicked() {
 
-        if (spinnerBeanSelected == null || spinnerBeanSelected.getId() == null) {
+        if (spinnerBeanSelected == null || spinnerBeanSelected.getId() == null
+                || spinnerBeanSelected.getId().equals("all")) {
             toast("请选择部门");
             return;
         }
@@ -75,10 +75,10 @@ public class RegisterActivity extends JDRYBaseActivity {
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("mobilePhone",phone);
+        jsonObject.put("mobilePhone", phone);
         jsonObject.put("password", MD5Util.encrypt(pwd));
-        jsonObject.put("name",userName);
-        jsonObject.put("deptId",spinnerBeanSelected.getId());
+        jsonObject.put("name", JDRYUtils.URLEncode(userName));
+        jsonObject.put("deptId", spinnerBeanSelected.getId());
 
         registerPresenter.register(jsonObject.toJSONString());
     }
@@ -102,14 +102,11 @@ public class RegisterActivity extends JDRYBaseActivity {
 
     @Override
     public <T> void httpSuccess(T t, int order) {
-        if (order == 1) { //获取部门接口返回
-            toast("获取部门信息成功~");
+        if (order == 1) { //获取部门接口返
             List<DeptBean> deptBean = (List<DeptBean>) t;
-            //fix me
-            Logger.d("部门", JSON.toJSONString(deptBean));
             initSpinnerByArea(deptBean);
         } else {
-            toast("注册成功~");
+            toast((String) t);
             closeActivity();
         }
     }
@@ -118,6 +115,7 @@ public class RegisterActivity extends JDRYBaseActivity {
     public <T> void httpFailure(T t, int order) {
         if (order == 1) { //获取部门接口返回
             toast("获取部门信息失败~");
+            initFailSpinnerByArea();
         } else {
             toast("注册失败~");
         }
@@ -126,16 +124,47 @@ public class RegisterActivity extends JDRYBaseActivity {
     private DeptBean spinnerBeanSelected = null;
 
     private void initSpinnerByArea(List<DeptBean> list) {
-        DeptBean[] spinnerBeans = new DeptBean[list.size()];
-        for (int i = 0; i < list.size(); ++i) {
-            //如果是超级管理员的话 就增加全部地区，否则就不显示
+        DeptBean[] spinnerBeans = null;
+        if (null == list || 0 == list.size()) {
+            spinnerBeans = new DeptBean[1];
             DeptBean deptBean = new DeptBean();
-            deptBean.setOrder(list.get(i).getOrder());
-            deptBean.setId(list.get(i).getId());
-            deptBean.setName(list.get(i).getName());
-            deptBean.setDesc(list.get(i).getDesc());
-            spinnerBeans[i] = deptBean;
+            deptBean.setId("all");
+            deptBean.setName("请选择部门");
+            deptBean.setDesc("请选择部门");
+            spinnerBeans[0] = deptBean;
+        } else {
+            spinnerBeans = new DeptBean[list.size() + 1];
+            for (int i = 0; i < spinnerBeans.length; ++i) {
+
+                if (i == 0) {
+                    DeptBean deptBean = new DeptBean();
+                    deptBean.setId("all");
+                    deptBean.setName("请选择部门");
+                    deptBean.setDesc("请选择部门");
+                    spinnerBeans[0] = deptBean;
+                } else {
+                    //如果是超级管理员的话 就增加全部地区，否则就不显示
+                    int j = i - 1;
+                    DeptBean deptBean = new DeptBean();
+                    deptBean.setOrder(list.get(j).getOrder());
+                    deptBean.setId(list.get(j).getId());
+                    deptBean.setName(list.get(j).getName());
+                    deptBean.setDesc(list.get(j).getDesc());
+                    spinnerBeans[i] = deptBean;
+                }
+            }
         }
+
+        setSpinnerByArea(spinner1, spinnerBeans);
+    }
+
+    private void initFailSpinnerByArea() {
+        DeptBean[] spinnerBeans = new DeptBean[1];
+        DeptBean deptBean = new DeptBean();
+        deptBean.setId("all");
+        deptBean.setName("请选择部门");
+        deptBean.setDesc("请选择部门");
+        spinnerBeans[0] = deptBean;
         setSpinnerByArea(spinner1, spinnerBeans);
     }
 

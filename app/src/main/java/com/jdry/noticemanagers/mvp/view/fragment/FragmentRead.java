@@ -33,9 +33,12 @@ public class FragmentRead extends JDRYBaseFragment {
     ListView lvRead;
     @BindView(R.id.swipeRefreshLayout)
     SmartRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.view_no_data)
+    View viewNoData;
 
     private CommonAdapter<ReadMsgBean> adapter;
     private List<ReadMsgBean> list = new ArrayList<>();
+    private List<ReadMsgBean> listFormat = new ArrayList<>();
     private ReadMsgPresenter readMsgPresenter;
 
     @Override
@@ -52,7 +55,7 @@ public class FragmentRead extends JDRYBaseFragment {
     }
 
     private void initData() {
-        adapter = new CommonAdapter<ReadMsgBean>(getContext(), list, R.layout.read_not_card) {
+        adapter = new CommonAdapter<ReadMsgBean>(getContext(), listFormat, R.layout.read_not_card) {
             @Override
             public void convert(ViewHolder holder, ReadMsgBean info) {
                 holder.setText(R.id.tv_title, info.getTitle());
@@ -60,18 +63,18 @@ public class FragmentRead extends JDRYBaseFragment {
                 if (TextUtils.isEmpty(content)) {
                     holder.setText(R.id.tv_content, "");
                 } else {
-                    holder.setText(R.id.tv_content, JdryHtmlHandler.removeHtmlTag(content));
+                    holder.setText(R.id.tv_content, content);
                 }
                 holder.setText(R.id.tv_time, JDRYTime.transferLongToString(info.getIssueTime(), "yyyy.MM.dd HH:mm:ss"));
                 holder.setText(R.id.tv_status, "状态：已读");
                 holder.setTextColor(R.id.tv_status, 0xFF209E85);
                 ImageView imageView = holder.getView(R.id.iv_msg);
-                List<String> imageList = JDRYUtils.getImageSrc(content);
-                if (null == imageList || 0 == imageList.size()) {
-                    return;
+                String imageUrl = info.getImgUrl();
+                if (TextUtils.isEmpty(imageUrl)) {
+                    imageView.setImageResource(R.drawable.xft);
+                } else {
+                    GlideImageLoader.displayCircleRadius(getContext(), imageUrl, imageView, 15);
                 }
-                GlideImageLoader.displayCircleRadius(getContext(), imageList.get(0), imageView, 15);
-
             }
         };
         lvRead.setAdapter(adapter);
@@ -80,7 +83,8 @@ public class FragmentRead extends JDRYBaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.putExtra("flag", 1);
-                intent.putExtra("obj", list.get(position));
+                ReadMsgBean readMsgBean = list.get(position);
+                intent.putExtra("obj", readMsgBean);
                 openNewActivityByIntent(ActivityDetail.class, intent);
             }
         });
@@ -88,29 +92,83 @@ public class FragmentRead extends JDRYBaseFragment {
 
 
     public <T> void httpSuccess(T t, int order) {
+        swipeRefreshLayout.finishRefresh();
         CommonBean commonBean = (CommonBean) t;
-        if (commonBean == null || commonBean.getData() == null) {
+        if (commonBean == null) {
             toast("暂无已读信息");
+            viewNoData.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
             return;
         }
+
         List<ReadMsgBean> refreshList = JSON.parseArray(commonBean.getData().toString(), ReadMsgBean.class);
-        setListData(refreshList);
+
+        if (null == refreshList) {
+            viewNoData.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            return;
+        }
+
+        if (0 == refreshList.size()) {
+            viewNoData.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            return;
+        }
+
+        viewNoData.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+
+        //先清空
+        list.clear();
+        listFormat.clear();
+
+        for (int i = 0; i < refreshList.size(); i++) {
+
+            ReadMsgBean info = refreshList.get(i);
+
+            //原始报文保存起来
+            ReadMsgBean oldBean = saveOld(info);
+            list.add(oldBean);
+
+            String content = info.getContent();
+            if (!TextUtils.isEmpty(content)) {
+                String newContent = JdryHtmlHandler.removeHtmlTag(content);
+                info.setContent(newContent);
+
+                List<String> imageList = JDRYUtils.getImageSrc(content);
+                if (null != imageList && imageList.size() > 0) {
+                    info.setImgUrl(imageList.get(0));
+                }
+            }
+
+            listFormat.add(info);
+        }
+
+        adapter.setItems(listFormat);
+    }
+
+    private ReadMsgBean saveOld(ReadMsgBean info){
+        ReadMsgBean newRead = new ReadMsgBean();
+        newRead.setContent(info.getContent());
+        newRead.setId(info.getId());
+        newRead.setStatus(info.getStatus());
+        newRead.setTitle(info.getTitle());
+        newRead.setAppUserId(info.getAppUserId());
+        newRead.setIssueTime(info.getIssueTime());
+        newRead.setIssueUserName(info.getIssueUserName());
+        newRead.setNoticeId(info.getNoticeId());
+        newRead.setReadMark(info.getReadMark());
+        newRead.setReadTime(info.getReadTime());
+
+        return newRead;
     }
 
     public <T> void httpFailure(T t, int order) {
         toast((String) t);
         swipeRefreshLayout.finishRefresh();
-    }
 
-
-    private void setListData(List<ReadMsgBean> refreshList) {
-        if (null == refreshList || refreshList.size() == 0) {
-            toast("暂无已读信息");
-            return;
-        }
-        list = refreshList;
-        adapter.setItems(list);
-        swipeRefreshLayout.finishRefresh();
+        viewNoData.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.GONE);
     }
 
     public void refresh() {

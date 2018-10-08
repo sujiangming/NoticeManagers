@@ -6,6 +6,7 @@ import com.jdry.noticemanagers.bean.ReadMsgBean;
 import com.jdry.noticemanagers.mvp.model.UnReadMsgModel;
 import com.jdry.noticemanagers.mvp.view.fragment.FragmentUnRead;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,12 +32,13 @@ public class UnReadMsgPresenter implements IPresenterCallback {
     public <T> void httpRequestSuccess(T t, int order) {
         fragmentUnRead.hideProgress();
         CommonBean commonBean = (CommonBean) t;
-        if (commonBean.getData() == null) {
+        if (commonBean == null) {
             fragmentUnRead.toast("没有最新的信息");
+            fragmentUnRead.httpSuccess(new ArrayList<ReadMsgBean>(), order);
             return;
         }
         List<ReadMsgBean> list = JSON.parseArray(commonBean.getData().toString(), ReadMsgBean.class);
-        fragmentUnRead.httpSuccess(list,order);
+        fragmentUnRead.httpSuccess(list, order);
     }
 
     @Override

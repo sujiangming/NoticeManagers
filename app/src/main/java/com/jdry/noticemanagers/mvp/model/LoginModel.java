@@ -9,6 +9,7 @@ import com.jdry.noticemanagers.global.JDRYConstant;
 import com.jdry.noticemanagers.http.IService;
 import com.jdry.noticemanagers.http.RetrofitUtil;
 import com.jdry.noticemanagers.mvp.presenter.IPresenterCallback;
+import com.jdry.noticemanagers.utils.MD5Util;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,9 +28,10 @@ public class LoginModel {
     }
 
     public void getLogin(String userName, final String password) {
+        String tt = MD5Util.encrypt(password);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mobilePhone", userName);
-        jsonObject.put("password", password);
+        jsonObject.put("password", tt);
         RetrofitUtil.getInstance()
                 .createReq(IService.class)
                 .login(jsonObject.toJSONString())
@@ -47,16 +49,18 @@ public class LoginModel {
 
                         CommonBean commonBean = response.body();
                         if (commonBean.getStatus() != 1) {
-                            presenter.httpRequestFailure(response.message(), JDRYConstant.INVOKE_API_DEFAULT_TIME);
+                            presenter.httpRequestSuccess(commonBean, JDRYConstant.HTTP_COMMON_STATUS_FAIL);
                             return;
                         }
 
                         if (null == commonBean.getData()) {
-                            presenter.httpRequestFailure(response.message(), JDRYConstant.INVOKE_API_DEFAULT_TIME);
+                            presenter.httpRequestSuccess(commonBean, JDRYConstant.HTTP_COMMON_DATA_EMPTY);
                             return;
                         }
 
                         LoginInfoBean loginInfoBean = JSON.parseObject(commonBean.getData().toString(), LoginInfoBean.class);
+                        loginInfoBean.setId(1l);
+                        loginInfoBean.setPassword(password);
                         JDRYApplication.getDaoSession().getLoginInfoBeanDao().insertOrReplace(loginInfoBean);
 
                         presenter.httpRequestSuccess(commonBean, 0);

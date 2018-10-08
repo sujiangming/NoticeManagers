@@ -27,11 +27,7 @@ public class ReadMsgDetailPresenter implements IPresenterCallback {
     public <T> void httpRequestSuccess(T t, int order) {
         activityDetail.hideProgress();
         CommonBean commonBean = (CommonBean) t;
-        if (commonBean.getData() == null) {
-            activityDetail.httpFailure(commonBean.getMessage(), 0);
-            return;
-        }
-        activityDetail.httpSuccess(t, 1);
+        activityDetail.httpSuccess(commonBean, 1);
     }
 
     @Override

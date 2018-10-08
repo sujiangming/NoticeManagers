@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.jdry.noticemanagers.R;
 import com.jdry.noticemanagers.bean.LoginInfoBean;
 import com.jdry.noticemanagers.global.JDRYApplication;
+import com.jdry.noticemanagers.global.JDRYConstant;
+import com.jdry.noticemanagers.mvp.presenter.LoginPresenter;
 
 /**
  * Created by jdry on 2016/11/25.
@@ -56,11 +58,25 @@ public class LauncherActivity extends JDRYBaseActivity {
     //检查用户是否已经登录
     private void autoLogin() {
         LoginInfoBean loginInfoBean = JDRYApplication.getDaoSession().getLoginInfoBeanDao().queryBuilder().unique();
-        if (loginInfoBean == null || TextUtils.isEmpty(loginInfoBean.getMobilePhone())) {
+        if (loginInfoBean == null) {
             openNewActivity(LoginActivity.class);
             return;
         }
-        openNewActivity(MainActivity.class);
+        if (TextUtils.isEmpty(loginInfoBean.getMobilePhone())) {
+            openNewActivity(LoginActivity.class);
+            return;
+        }
+
+        if (TextUtils.isEmpty(loginInfoBean.getPassword())) {
+            openNewActivity(LoginActivity.class);
+            return;
+        }
+
+        login(loginInfoBean.getMobilePhone(), loginInfoBean.getPassword());
+    }
+
+    private void login(String username, String pwd) {
+        new LoginPresenter(this, JDRYConstant.LAUNCHER_PAGE_LOGIN).login(username, pwd);
     }
 
     @Override
