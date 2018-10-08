@@ -19,25 +19,37 @@
         android:layout_below="@id/tv_header"
         android:background="@color/colorFDFBF3">
 
-        <ListView
-            android:id="@+id/lv_read"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/colorFDFBF3"
-            android:dividerHeight="@dimen/space_12_dp"
-            android:fastScrollEnabled="false"
-            android:scrollbars="none"
-            android:scrollingCache="false">
+            android:layout_height="match_parent">
 
-        </ListView>
+            <ListView
+                android:id="@+id/lv_read"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/colorFDFBF3"
+                android:dividerHeight="@dimen/space_12_dp"
+                android:fastScrollEnabled="false"
+                android:scrollbars="none"
+                android:scrollingCache="false">
+
+            </ListView>
+
+            <TextView
+                android:id="@+id/tv_no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/refresh_item_press"
+                android:drawablePadding="@dimen/space_12_dp"
+                android:drawableTop="@drawable/empty_img"
+                android:padding="@dimen/space_15_dp"
+                android:text="@string/no_data_desc"
+                android:textColor="@color/color555555"
+                android:textSize="@dimen/font_16_sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-    <include
-        android:id="@+id/view_no_data"
-        layout="@layout/common_no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
 </RelativeLayout>

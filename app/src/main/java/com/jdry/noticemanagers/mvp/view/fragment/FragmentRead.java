@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.jdry.noticemanagers.R;
@@ -33,8 +34,8 @@ public class FragmentRead extends JDRYBaseFragment {
     ListView lvRead;
     @BindView(R.id.swipeRefreshLayout)
     SmartRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.view_no_data)
-    View viewNoData;
+    @BindView(R.id.tv_no_data)
+    TextView viewNoData;
 
     private CommonAdapter<ReadMsgBean> adapter;
     private List<ReadMsgBean> list = new ArrayList<>();
@@ -71,7 +72,7 @@ public class FragmentRead extends JDRYBaseFragment {
                 ImageView imageView = holder.getView(R.id.iv_msg);
                 String imageUrl = info.getImgUrl();
                 if (TextUtils.isEmpty(imageUrl)) {
-                    imageView.setImageResource(R.drawable.xft);
+                    imageView.setImageResource(R.drawable.zhanweitu);
                 } else {
                     GlideImageLoader.displayCircleRadius(getContext(), imageUrl, imageView, 15);
                 }
@@ -97,7 +98,7 @@ public class FragmentRead extends JDRYBaseFragment {
         if (commonBean == null) {
             toast("暂无已读信息");
             viewNoData.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            lvRead.setVisibility(View.GONE);
             return;
         }
 
@@ -105,18 +106,18 @@ public class FragmentRead extends JDRYBaseFragment {
 
         if (null == refreshList) {
             viewNoData.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            lvRead.setVisibility(View.GONE);
             return;
         }
 
         if (0 == refreshList.size()) {
             viewNoData.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            lvRead.setVisibility(View.GONE);
             return;
         }
 
         viewNoData.setVisibility(View.GONE);
-        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        lvRead.setVisibility(View.VISIBLE);
 
         //先清空
         list.clear();
@@ -147,7 +148,7 @@ public class FragmentRead extends JDRYBaseFragment {
         adapter.setItems(listFormat);
     }
 
-    private ReadMsgBean saveOld(ReadMsgBean info){
+    private ReadMsgBean saveOld(ReadMsgBean info) {
         ReadMsgBean newRead = new ReadMsgBean();
         newRead.setContent(info.getContent());
         newRead.setId(info.getId());
@@ -168,7 +169,7 @@ public class FragmentRead extends JDRYBaseFragment {
         swipeRefreshLayout.finishRefresh();
 
         viewNoData.setVisibility(View.VISIBLE);
-        swipeRefreshLayout.setVisibility(View.GONE);
+        lvRead.setVisibility(View.GONE);
     }
 
     public void refresh() {
