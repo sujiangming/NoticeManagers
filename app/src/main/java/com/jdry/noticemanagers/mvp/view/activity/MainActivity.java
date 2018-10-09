@@ -72,6 +72,7 @@ public class MainActivity extends JDRYBaseActivity {
 
     @Override
     protected void onCreateByMe(Bundle savedInstanceState) {
+        setStatusBarTransparent();
         fragmentManager = getSupportFragmentManager();
         initFragments();
         registerMessageReceiver();  // used for receive msg

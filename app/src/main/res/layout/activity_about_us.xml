@@ -1,67 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <com.jdry.noticemanagers.mvp.view.custom.TopBarView
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content" />
 
-        <com.jdry.noticemanagers.mvp.view.custom.TopBarView
-            android:id="@+id/top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/space_100_dp"
+        android:src="@mipmap/web_hi_res_512" />
 
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/top_bar"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/space_100_dp"
-            android:src="@mipmap/web_hi_res_512" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/space_10_dp"
+        android:text="@string/app_launcher"
+        android:textColor="@color/color353535"
+        android:textSize="@dimen/font_14_sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/space_10_dp"
-            android:text="欢迎使用信访通~"
-            android:textColor="@color/color353535"
-            android:textSize="@dimen/font_14_sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/space_15_dp"
+        android:gravity="center"
+        android:text="@string/support_desc"
+        android:textColor="@color/color353535"
+        android:textSize="@dimen/font_14_sp" />
 
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="62dp"-->
-        <!--android:text="@string/company_name"-->
-        <!--android:textColor="@color/color555555"-->
-        <!--android:textSize="@dimen/font_14_sp" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="34dp"-->
-        <!--android:text="@string/company_copyright"-->
-        <!--android:textColor="@color/color555555"-->
-        <!--android:textSize="@dimen/font_14_sp" />-->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/space_15_dp"
-            android:gravity="center"
-            android:text="@string/support_desc"
-            android:textColor="@color/color353535"
-            android:textSize="@dimen/font_14_sp" />
-
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

@@ -45,5 +45,6 @@ public class UnReadMsgPresenter implements IPresenterCallback {
     public void httpRequestFailure(String t, int order) {
         fragmentUnRead.hideProgress();
         fragmentUnRead.toast(t);
+        fragmentUnRead.httpFailure(t,order);
     }
 }

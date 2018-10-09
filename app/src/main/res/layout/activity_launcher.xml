@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_launcher"
             android:gravity="center"
-            android:text="@string/app_name"
+            android:text="@string/app_launcher"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/font_40_sp"
+            android:textSize="@dimen/font_16_sp"
             android:textStyle="bold" />
 
         <TextView
