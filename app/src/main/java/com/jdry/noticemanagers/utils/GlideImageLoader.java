@@ -1,11 +1,15 @@
 package com.jdry.noticemanagers.utils;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.Util;
 import com.jdry.noticemanagers.R;
 import com.jdry.noticemanagers.mvp.view.custom.GlideCircleTransform;
 
@@ -15,34 +19,34 @@ import com.jdry.noticemanagers.mvp.view.custom.GlideCircleTransform;
 
 public class GlideImageLoader {
 
-    public static void displayImage(Context context, Object path, ImageView imageView) {
+    public static void displayImage1(Context context, Object path, ImageView imageView) {
         //Glide 加载图片简单用法
         Glide.with(context)
                 .load(path)
                 .crossFade()
-                .placeholder(R.drawable.zhanweitu)
+                .placeholder(R.drawable.xft_zhanweitu)
                 .dontAnimate()
-                .error(R.drawable.zhanweitu)
+                .error(R.drawable.xft_zhanweitu)
                 .priority(Priority.NORMAL)
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 
-    public  static void displayCircleRadius(Context context, Object path, ImageView imageView, int radius) {
+    public  static void displayCircleRadius1(Context context, Object path, ImageView imageView, int radius) {
         Glide.with(context)
                 .load(path)
                 .crossFade()
                 .transform(new GlideCircleTransform(context, radius))
-                .placeholder(R.drawable.zhanweitu)
+                .placeholder(R.drawable.xft_zhanweitu)
                 .dontAnimate()
-                .error(R.drawable.zhanweitu)
+                .error(R.drawable.xft_zhanweitu)
                 .priority(Priority.NORMAL)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 
-    public static void displayByImgRes(Context context, Object path, ImageView imageView, int imgRes) {
+    public static void displayByImgRes1(Context context, Object path, ImageView imageView, int imgRes) {
         Glide.with(context)
                 .load(path)
                 .crossFade()
@@ -51,5 +55,89 @@ public class GlideImageLoader {
                 .priority(Priority.NORMAL)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static void displayImage(Context context, Object path, ImageView imageView) {
+        //Glide 加载图片简单用法
+        if (!Util.isOnMainThread()) {
+            return;
+        }
+        if (null == context) {
+            return;
+        }
+        Activity activity = (Activity) context;
+        if (activity.isDestroyed()) {
+            return;
+        }
+        //Glide 加载图片简单用法
+        Glide.with(context)
+                .load(path)
+                .crossFade()
+                .placeholder(R.drawable.xft_zhanweitu)
+                .dontAnimate()
+                .error(R.drawable.xft_zhanweitu)
+                .priority(Priority.NORMAL)
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .into(imageView);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static void displayCircleRadius(Context context, Object path, ImageView imageView, int radius) {
+        if (!Util.isOnMainThread()) {
+            return;
+        }
+        if (null == context) {
+            return;
+        }
+
+        Activity activity = (Activity) context;
+        if (activity.isDestroyed()) {
+            return;
+        }
+
+        Glide.with(context)
+                .load(path)
+                .crossFade()
+                .transform(new GlideCircleTransform(context, radius))
+                .placeholder(R.drawable.xft_zhanweitu)
+                .dontAnimate()
+                .error(R.drawable.xft_zhanweitu)
+                .priority(Priority.NORMAL)
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static void displayByImgRes(Context context, Object path, ImageView imageView, int imgRes) {
+        if (!Util.isOnMainThread()) {
+            return;
+        }
+        if (null == context) {
+            return;
+        }
+
+        Activity activity = (Activity) context;
+        if (activity.isDestroyed()) {
+            return;
+        }
+
+        Glide.with(context)
+                .load(path)
+                .crossFade()
+                .placeholder(imgRes)
+                .error(imgRes)
+                .priority(Priority.NORMAL)
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
+    }
+
+    public static void stopLoad(Context context) {
+        if (Util.isOnMainThread()) {
+            Glide.with(context).pauseRequests();
+        }
     }
 }

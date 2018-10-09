@@ -33,24 +33,34 @@
             android:textSize="@dimen/font_14_sp" />
 
         <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginBottom="62dp"-->
-            <!--android:text="@string/company_name"-->
-            <!--android:textColor="@color/color555555"-->
-            <!--android:textSize="@dimen/font_14_sp" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="62dp"-->
+        <!--android:text="@string/company_name"-->
+        <!--android:textColor="@color/color555555"-->
+        <!--android:textSize="@dimen/font_14_sp" />-->
 
         <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginBottom="34dp"-->
-            <!--android:text="@string/company_copyright"-->
-            <!--android:textColor="@color/color555555"-->
-            <!--android:textSize="@dimen/font_14_sp" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="34dp"-->
+        <!--android:text="@string/company_copyright"-->
+        <!--android:textColor="@color/color555555"-->
+        <!--android:textSize="@dimen/font_14_sp" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/space_15_dp"
+            android:gravity="center"
+            android:text="@string/support_desc"
+            android:textColor="@color/color353535"
+            android:textSize="@dimen/font_14_sp" />
 
     </RelativeLayout>
 

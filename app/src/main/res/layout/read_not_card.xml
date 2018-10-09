@@ -18,7 +18,8 @@
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/meinv" />
+            android:src="@drawable/xft_zhanweitu"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -124,9 +124,10 @@ public class FragmentUnRead extends JDRYBaseFragment {
                 ImageView imageView = holder.getView(R.id.iv_msg);
                 String imageUrl = info.getImgUrl();
                 if (TextUtils.isEmpty(imageUrl)) {
-                    imageView.setImageResource(R.drawable.zhanweitu);
+                    imageView.setVisibility(View.GONE);
                 } else {
-                    GlideImageLoader.displayCircleRadius(getContext(), imageUrl, imageView, 15);
+                    imageView.setVisibility(View.VISIBLE);
+                    GlideImageLoader.displayImage(getContext(), imageUrl, imageView);
                 }
             }
         };
@@ -198,7 +199,7 @@ public class FragmentUnRead extends JDRYBaseFragment {
     }
 
 
-    private ReadMsgBean saveOld(ReadMsgBean info){
+    private ReadMsgBean saveOld(ReadMsgBean info) {
         ReadMsgBean newRead = new ReadMsgBean();
         newRead.setContent(info.getContent());
         newRead.setId(info.getId());

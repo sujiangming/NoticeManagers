@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:divider="@color/colorFDFBF3"
                 android:dividerHeight="@dimen/space_12_dp"
-                android:fastScrollEnabled="false"
                 android:scrollbars="none"
+                android:fastScrollEnabled="false"
                 android:scrollingCache="false">
 
             </ListView>

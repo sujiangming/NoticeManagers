@@ -17,6 +17,9 @@ import com.jdry.noticemanagers.mvp.presenter.ReadMsgPresenter;
 import com.jdry.noticemanagers.mvp.view.activity.ActivityDetail;
 import com.jdry.noticemanagers.mvp.view.adapter.CommonAdapter;
 import com.jdry.noticemanagers.mvp.view.adapter.ViewHolder;
+import com.jdry.noticemanagers.rxbus.RxBus;
+import com.jdry.noticemanagers.rxbus.RxBusSubscriber;
+import com.jdry.noticemanagers.rxbus.RxSubscriptions;
 import com.jdry.noticemanagers.utils.GlideImageLoader;
 import com.jdry.noticemanagers.utils.JDRYTime;
 import com.jdry.noticemanagers.utils.JDRYUtils;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.Subscription;
+import rx.functions.Func1;
 
 public class FragmentRead extends JDRYBaseFragment {
 
@@ -72,9 +77,10 @@ public class FragmentRead extends JDRYBaseFragment {
                 ImageView imageView = holder.getView(R.id.iv_msg);
                 String imageUrl = info.getImgUrl();
                 if (TextUtils.isEmpty(imageUrl)) {
-                    imageView.setImageResource(R.drawable.zhanweitu);
+                    imageView.setVisibility(View.GONE);
                 } else {
-                    GlideImageLoader.displayCircleRadius(getContext(), imageUrl, imageView, 15);
+                    imageView.setVisibility(View.VISIBLE);
+                    GlideImageLoader.displayImage(getContext(), imageUrl, imageView);
                 }
             }
         };
@@ -90,7 +96,6 @@ public class FragmentRead extends JDRYBaseFragment {
             }
         });
     }
-
 
     public <T> void httpSuccess(T t, int order) {
         swipeRefreshLayout.finishRefresh();
@@ -174,5 +179,52 @@ public class FragmentRead extends JDRYBaseFragment {
 
     public void refresh() {
         readMsgPresenter.getReadMsg(getUserMobilePhone());
+    }
+
+    private Subscription mRxSub;
+
+    private void subscribeEvent() {
+        RxSubscriptions.remove(mRxSub);
+        mRxSub = RxBus.getDefault().toObservable(String.class)
+                .map(new Func1<String, String>() {
+                    @Override
+                    public String call(String event) {
+                        // 变换等操作
+                        return event;
+                    }
+                })
+                .subscribe(new RxBusSubscriber<String>() {
+                    @Override
+                    protected void onEvent(String myEvent) {
+                        if (TextUtils.isEmpty(myEvent)) {
+                            return;
+                        }
+
+                        readMsgPresenter.getReadMsg(getUserMobilePhone());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        /**
+                         * 这里注意: 一旦订阅过程中发生异常,走到onError,则代表此次订阅事件完成,后续将收不到onNext()事件,
+                         * 即 接受不到后续的任何事件,实际环境中,我们需要在onError里 重新订阅事件!
+                         */
+                        subscribeEvent();
+                    }
+                });
+        RxSubscriptions.add(mRxSub);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        subscribeEvent();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxSubscriptions.remove(mRxSub);
     }
 }
