@@ -55,14 +55,6 @@
             android:textColor="@color/color686868"
             android:textSize="@dimen/font_14_sp" />
 
-        <!--<ImageView-->
-            <!--android:layout_width="16dp"-->
-            <!--android:layout_height="16dp"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginRight="@dimen/space_16_dp"-->
-            <!--android:src="@drawable/more" />-->
-
     </RelativeLayout>
 
     <LinearLayout
@@ -87,6 +79,38 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="关于"
+            android:textColor="#030303"
+            android:textSize="@dimen/font_16_sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/more" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_set_password"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="@dimen/space_20_dp"
+        android:background="@drawable/home_item_press"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_20_dp"
+        android:paddingRight="@dimen/space_20_dp">
+
+        <ImageView
+            android:layout_width="@dimen/space_30_dp"
+            android:layout_height="@dimen/space_30_dp"
+            android:layout_marginRight="@dimen/space_12_dp"
+            android:src="@drawable/verifycode" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改密码"
             android:textColor="#030303"
             android:textSize="@dimen/font_16_sp" />
 

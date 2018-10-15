@@ -41,6 +41,10 @@ public interface IService {
     @POST("app/api/notice/readNotice")
     Call<CommonBean> setUnReadMsgStatus(@Field("data") String data,@Field("token") String token);
 
+    @FormUrlEncoded
+    @POST("app/api/changePassword")
+    Call<CommonBean> updatePwd(@Field("data") String data,@Field("token") String token);
+
     /**
      * 上传图片
      *

@@ -33,6 +33,17 @@
                 android:layout_marginTop="@dimen/space_30_dp"
                 android:src="@mipmap/ic_launcher" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="@string/app_launcher"
+                android:textColor="@color/color878787"
+                android:textSize="@dimen/font_14_sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
@@ -121,7 +132,6 @@
                 android:text="登录"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/font_18_sp" />
-
 
             <TextView
                 android:id="@+id/tv_forget_pwd"

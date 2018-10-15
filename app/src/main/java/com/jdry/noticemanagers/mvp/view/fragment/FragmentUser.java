@@ -10,6 +10,7 @@ import com.jdry.noticemanagers.bean.LoginInfoBean;
 import com.jdry.noticemanagers.global.JDRYApplication;
 import com.jdry.noticemanagers.mvp.view.activity.AboutUsActivity;
 import com.jdry.noticemanagers.mvp.view.activity.LoginActivity;
+import com.jdry.noticemanagers.mvp.view.activity.UpdatePwdActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,7 +23,7 @@ public class FragmentUser extends JDRYBaseFragment {
     @BindView(R.id.tv_account_pos)
     TextView tvAccountPos;
 
-    @OnClick({R.id.rl_info, R.id.ll_help_center, R.id.ll_set})
+    @OnClick({R.id.rl_info, R.id.ll_help_center, R.id.ll_set, R.id.ll_set_password})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_info:
@@ -32,6 +33,9 @@ public class FragmentUser extends JDRYBaseFragment {
                 break;
             case R.id.ll_set:
                 openNewActivity(LoginActivity.class, null);
+                break;
+            case R.id.ll_set_password:
+                openNewActivity(UpdatePwdActivity.class, null);
                 break;
         }
     }

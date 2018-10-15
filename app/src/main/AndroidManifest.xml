@@ -91,6 +91,10 @@
             android:name=".mvp.view.activity.RegisterActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".mvp.view.activity.UpdatePwdActivity"
+            android:screenOrientation="portrait" />
+
         <!--开机广播自启动接受者-->
         <receiver
             android:name=".receiver.BootBroadcastReceiver"

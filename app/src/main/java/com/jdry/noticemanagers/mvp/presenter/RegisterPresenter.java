@@ -30,7 +30,7 @@ public class RegisterPresenter implements IPresenterCallback {
     @Override
     public <T> void httpRequestSuccess(T t, int order) {
         registerActivity.hideProgress();
-        registerActivity.httpSuccess((String)t,2);
+        registerActivity.httpSuccess(t,2);
         JSONObject jsonObject = JSON.parseObject(userData);
         String mobilePhone = jsonObject.getString("mobilePhone");
         JDRYApplication.getInstance().setJPushTag(mobilePhone);
