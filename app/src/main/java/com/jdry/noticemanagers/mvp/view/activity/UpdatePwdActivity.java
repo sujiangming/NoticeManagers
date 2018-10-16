@@ -7,8 +7,11 @@ import android.widget.EditText;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jdry.noticemanagers.R;
+import com.jdry.noticemanagers.bean.LoginInfoBean;
+import com.jdry.noticemanagers.global.JDRYApplication;
 import com.jdry.noticemanagers.mvp.presenter.UpdatePresenter;
 import com.jdry.noticemanagers.mvp.view.custom.TopBarView;
+import com.jdry.noticemanagers.utils.JDRYUtils;
 import com.jdry.noticemanagers.utils.MD5Util;
 
 import butterknife.BindView;
@@ -38,6 +41,11 @@ public class UpdatePwdActivity extends JDRYBaseActivity {
 
         if (TextUtils.isEmpty(phone)) {
             toast("请输入手机号");
+            return;
+        }
+
+        if(!JDRYUtils.isMobile(phone)){
+            toast("请输入正确的手机号");
             return;
         }
 
@@ -74,6 +82,9 @@ public class UpdatePwdActivity extends JDRYBaseActivity {
     protected void onCreateByMe(Bundle savedInstanceState) {
         setTopBar(topBar, "修改密码", 0);
         registerPresenter = new UpdatePresenter(this);
+        //设置手机号
+        LoginInfoBean loginInfoBean = JDRYApplication.getDaoSession().getLoginInfoBeanDao().queryBuilder().unique();
+        etUserPhone.setText(loginInfoBean.getMobilePhone());
     }
 
     @Override

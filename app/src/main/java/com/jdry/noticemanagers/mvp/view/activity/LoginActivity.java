@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jdry.noticemanagers.R;
 import com.jdry.noticemanagers.global.JDRYConstant;
 import com.jdry.noticemanagers.mvp.presenter.LoginPresenter;
+import com.jdry.noticemanagers.utils.JDRYUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,9 +44,15 @@ public class LoginActivity extends JDRYBaseActivity {
     private void login() {
         String userName = etUserName.getText().toString();
         if (null == userName || "".equals(userName)) {
-            toast("请输入用户名");
+            toast("请输入用户手机号");
             return;
         }
+
+        if (!JDRYUtils.isMobile(userName)) {
+            toast("请输入正确的手机号");
+            return;
+        }
+
         String pwd = etPwd.getText().toString();
         if (null == pwd || "".equals(pwd)) {
             toast("请输入密码");

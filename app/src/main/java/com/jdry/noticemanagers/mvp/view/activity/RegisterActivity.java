@@ -53,17 +53,22 @@ public class RegisterActivity extends JDRYBaseActivity {
             return;
         }
 
-        String userName = etUserName.getText().toString();
-
-        if (TextUtils.isEmpty(userName)) {
-            toast("请输入用户名");
-            return;
-        }
-
         String phone = etUserPhone.getText().toString();
 
         if (TextUtils.isEmpty(phone)) {
             toast("请输入手机号");
+            return;
+        }
+
+        if(!JDRYUtils.isMobile(phone)){
+            toast("请输入正确的手机号");
+            return;
+        }
+
+        String userName = etUserName.getText().toString();
+
+        if (TextUtils.isEmpty(userName)) {
+            toast("请输入用户名");
             return;
         }
 
